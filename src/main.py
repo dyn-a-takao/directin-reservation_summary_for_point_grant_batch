@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 
 import sys
-import initer
 import dyconfig
-import dbconnector
 import csv
+from dbconnect import Dbconnector
+from init import Initter
 from datetime import date
 
 def main():
     """
     fromdateからtodateまでの間に実績確定した予約の一覧を抽出する。
     """    
-    logger = initer.initlogger()
+    logger = Initter.initlogger()
     logger.info('reservation_summary_for_point_grant_batch Start...')
 
     fromdate = date.fromisoformat(sys.argv[1])
     todate = date.fromisoformat(sys.argv[2])
     
     grace_days_after_checkout = dyconfig.get('reservation_summary_for_point_grant_batch', 'grace_days_after_checkout')
-    connection = dbconnector.connect('reserveServiceDB')
+    connection = Dbconnector.connect('reserveServiceDB')
     query = f'''
         SELECT MEMBER_CODE
             , PLAN_CODE
