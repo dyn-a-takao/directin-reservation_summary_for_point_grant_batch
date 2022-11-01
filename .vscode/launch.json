@@ -10,7 +10,7 @@
 			"request": "launch",
 			"program": "${file}",
 			"console": "integratedTerminal",
-			"args": ["2022-10-25", "2022-10-26"],
+			"args": ["2022-09-05", "2022-09-06"],
 			"justMyCode": true
 		}
 	]

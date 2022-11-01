@@ -9,7 +9,7 @@ class MemberRepository:
         self.logger = logger
 
     def get_member_group_codes(self):
-        return ["hoge", "huga", "M000000060"]
+        return ["hoge", "huga", "M000000060", "M000000019"]
         base_path = dyconfig.get('memberRepository', 'crm_api_root')
         action = dyconfig.get('memberRepository', 'member_group_code_api_path')
         url = f"{base_path}/{action}"
