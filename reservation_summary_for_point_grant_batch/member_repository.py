@@ -2,9 +2,9 @@ from symbol import parameters
 import dyconfig
 import requests
 import json
-import init
+import setup
 
-logger = init.initlogger()
+logger = setup.get_logger()
 
 def get_member_group_codes():
     return ["hoge", "huga", "M000000060", "M000000019"]

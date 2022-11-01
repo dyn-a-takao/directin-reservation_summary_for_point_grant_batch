@@ -1,11 +1,11 @@
 import logging
 import dyconfig
 
-def initconfig():
+def setup_config():
     dyconfig.load('config/batch.cfg')
 
-def initlogger():
-    initconfig()
+def get_logger():
+    setup_config()
     logger = logging.getLogger(__name__)
     loglevelname = dyconfig.get('loggers', 'level').upper()
     loglevel = getattr(logging, loglevelname, None)

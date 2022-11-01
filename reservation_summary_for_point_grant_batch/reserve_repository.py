@@ -1,8 +1,8 @@
 import dyconfig
-import init
+import setup
 from dbconnect import Dbconnector
 
-logger = init.initlogger()
+logger = setup.get_logger()
 
 def get_reserve_summary(member_group_codes, fromdate, todate):
     grace_days_after_checkout = dyconfig.get('reserveRepository', 'grace_days_after_checkout')

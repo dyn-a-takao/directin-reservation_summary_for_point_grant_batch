@@ -2,7 +2,7 @@
 
 import sys
 import csv
-import init
+import setup
 import member_repository
 import reserve_repository
 from datetime import date
@@ -11,7 +11,7 @@ def main():
     """
     fromdateからtodateまでの間に実績確定した予約の一覧を抽出する。
     """    
-    logger = init.initlogger()
+    logger = setup.get_logger()
     logger.info('reservation_summary_for_point_grant_batch Start...')
 
     fromdate = date.fromisoformat(sys.argv[1])
