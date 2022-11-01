@@ -3,6 +3,7 @@
 import sys
 import csv
 from init import Initter
+from memberRepository import MemberRepository
 from reserveRepository import ReserveRepository
 from datetime import date
 
@@ -16,8 +17,13 @@ def main():
     fromdate = date.fromisoformat(sys.argv[1])
     todate = date.fromisoformat(sys.argv[2])
 
+    memberRepository = MemberRepository(logger)
+    member_group_codes = memberRepository.get_member_group_codes()
     reserveRepository = ReserveRepository(logger)
-    reserve_list = reserveRepository.get_reserve_summary(fromdate=fromdate, todate=todate)
+    reserve_list = reserveRepository.get_reserve_summary(
+        member_group_codes=member_group_codes, 
+        fromdate=fromdate, 
+        todate=todate)
     
     with open('output/aggregated.csv', 'w', newline='') as csvfile:
         sqlwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
