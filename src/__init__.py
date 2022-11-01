@@ -3,8 +3,8 @@
 import sys
 import csv
 from init import Initter
-from memberRepository import MemberRepository
-from reserveRepository import ReserveRepository
+from member_repository import MemberRepository
+from reserve_repository import ReserveRepository
 from datetime import date
 
 def main():
