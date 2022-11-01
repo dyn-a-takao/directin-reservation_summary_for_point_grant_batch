@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-from xmlrpc.client import boolean
 
 config = None
 
@@ -15,5 +14,5 @@ def get(section: str, key: str) -> str:
 def getint(section: str, key: str) -> int:
     return config.getint(section, key)
 
-def getboolean(section: str, key: str) -> boolean:
+def getboolean(section: str, key: str) -> bool:
     return config.getboolean(section, key)
