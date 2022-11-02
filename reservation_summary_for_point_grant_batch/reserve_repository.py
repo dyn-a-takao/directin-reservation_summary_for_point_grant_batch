@@ -1,12 +1,10 @@
 import dyconfig
 import setup
-from dbconnect import Dbconnector
 
 logger = setup.get_logger()
 
-def get_reserve_summary(member_group_codes, fromdate, todate):
+def get_reserve_summary(connection, member_group_codes, fromdate, todate):
     grace_days_after_checkout = dyconfig.get('reserveRepository', 'grace_days_after_checkout')
-    connection = Dbconnector.connect('reserveServiceDB')
     member_group_code_term = ",".join([f"'{code}'" for code in member_group_codes])
     logger.debug(member_group_code_term)
     query = f'''

@@ -6,6 +6,7 @@ import setup
 import member_repository
 import reserve_repository
 from datetime import date
+from dbconnect import Dbconnector
 
 def main():
     """
@@ -18,7 +19,9 @@ def main():
     todate = date.fromisoformat(sys.argv[2])
 
     member_group_codes = member_repository.get_member_group_codes()
+    reserve_service_connection = Dbconnector.connect('reserveServiceDB')
     reserve_list = reserve_repository.get_reserve_summary(
+        reserve_service_connection,
         member_group_codes=member_group_codes, 
         fromdate=fromdate, 
         todate=todate)
