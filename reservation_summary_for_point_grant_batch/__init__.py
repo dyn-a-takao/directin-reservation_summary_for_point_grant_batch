@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
 import sys
-import csv
 import setup
 import member_repository
 import reserve_repository
-import dyconfig
+import csv_factory
 from datetime import date
 from dbconnect import Dbconnector
 
@@ -27,12 +26,10 @@ def main():
         fromdate=fromdate, 
         todate=todate)
     
-    output_csv_path = dyconfig.get('output_csv', 'output_path')
-    output_csv_name = f'{output_csv_path}/aggregated_{fromdate}_{todate}.csv'
-    with open(output_csv_name, 'w', newline='') as csvfile:
-        sqlwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-        sqlwriter.writerow(['MEMBER_CODE', 'PLAN_CODE', 'RESERVE_NUMBER', 'ACTUAL_PRICE', 'TOTAL_USE_POINT_AMOUNT'])
-        sqlwriter.writerows(reserve_list)
+    csv_factory.generate_summary_csv_file(
+        reserve_list=reserve_list,
+        fromdate=fromdate,
+        todate=todate)
     logger.info('reservation_summary_for_point_grant_batch End') 
     return len(reserve_list)
 
