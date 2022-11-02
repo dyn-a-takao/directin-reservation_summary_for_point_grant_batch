@@ -1,11 +1,9 @@
 import dyconfig
 import setup
-from dbconnect import Dbconnector
 
 logger = setup.get_logger()
-connection = Dbconnector.connect('reserveServiceDB')
 
-def get_reserve_summary(member_group_code, fromdate, todate):
+def get_reserve_summary(connection, member_group_code, fromdate, todate):
     grace_days_after_checkout = dyconfig.get('reserve_repository', 'grace_days_after_checkout')
     query = f'''
         SELECT MEMBER_CODE
@@ -35,10 +33,9 @@ def get_reserve_summary(member_group_code, fromdate, todate):
     '''
     logger.debug(query)
 
-    with connection:
-        with connection.cursor() as cursor:
-            cursor.execute(query)
-            reserve_list = cursor.fetchall()
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        reserve_list = cursor.fetchall()
     logger.info(f'Number of temporary reservation: {len(reserve_list)}')
 
     return reserve_list
