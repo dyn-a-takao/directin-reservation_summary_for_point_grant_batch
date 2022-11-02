@@ -1,8 +1,10 @@
 import logging
 import dyconfig
 
+
 def setup_config():
     dyconfig.load('config/batch.cfg')
+
 
 def get_logger():
     setup_config()

@@ -1,6 +1,7 @@
 import mysql.connector
 import dyconfig
 
+
 def get_connection(name: str):
     connection = mysql.connector.connect(
         host=dyconfig.get(name, 'host'),

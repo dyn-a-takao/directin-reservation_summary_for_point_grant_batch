@@ -4,9 +4,12 @@ import itertools
 
 logger = setup.get_logger()
 
+
 def get_reserve_summary(connection, member_group_codes, fromdate, todate):
-    grace_days_after_checkout = dyconfig.get('reserve_repository', 'grace_days_after_checkout')
-    member_group_code_term = ",".join([f"'{code}'" for code in member_group_codes])
+    grace_days_after_checkout = dyconfig.get(
+        'reserve_repository', 'grace_days_after_checkout')
+    member_group_code_term = ",".join(
+        [f"'{code}'" for code in member_group_codes])
     query = f'''
         SELECT MEMBER_GROUP_CODE
             , MEMBER_CODE
@@ -41,5 +44,6 @@ def get_reserve_summary(connection, member_group_codes, fromdate, todate):
         reserve_list = cursor.fetchall()
     logger.info(f'Number of temporary reservation: {len(reserve_list)}')
 
-    reserve_map_by_group = itertools.groupby(reserve_list, lambda reserve: reserve.pop('MEMBER_GROUP_CODE'))
+    reserve_map_by_group = itertools.groupby(
+        reserve_list, lambda reserve: reserve.pop('MEMBER_GROUP_CODE'))
     return reserve_map_by_group

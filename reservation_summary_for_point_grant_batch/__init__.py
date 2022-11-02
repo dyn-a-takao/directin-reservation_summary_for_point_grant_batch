@@ -10,6 +10,7 @@ from datetime import date
 
 logger = setup.get_logger()
 
+
 def main():
     """
     fromdateからtodateまでの間に実績確定した予約の一覧を抽出する。
@@ -25,18 +26,19 @@ def main():
     with reserve_service_connection:
         reserve_map_by_group = reserve_repository.get_reserve_summary(
             connection=reserve_service_connection,
-            member_group_codes=member_group_codes, 
-            fromdate=fromdate, 
+            member_group_codes=member_group_codes,
+            fromdate=fromdate,
             todate=todate)
 
-    for member_group_code, reserve_list in reserve_map_by_group:        
+    for member_group_code, reserve_list in reserve_map_by_group:
         csv_factory.generate_summary_csv_file(
             reserve_list=reserve_list,
             fromdate=fromdate,
             todate=todate,
             member_group_code=member_group_code)
 
-    logger.info('reservation_summary_for_point_grant_batch End') 
+    logger.info('reservation_summary_for_point_grant_batch End')
+
 
 if __name__ == '__main__':
     main()
