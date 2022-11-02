@@ -8,8 +8,8 @@ logger = setup.get_logger()
 
 def get_member_group_codes():
     return ["hoge", "huga", "M000000060", "M000000019"]
-    base_path = dyconfig.get('memberRepository', 'crm_api_root')
-    action = dyconfig.get('memberRepository', 'member_group_code_api_path')
+    base_path = dyconfig.get('member_repository', 'crm_api_root')
+    action = dyconfig.get('member_repository', 'member_group_code_api_path')
     url = f"{base_path}/{action}"
 
     parameters = {'hoge': "hoge", 'huga': 10}
