@@ -31,7 +31,7 @@ def main():
     output_csv_name = f'{output_csv_path}/aggregated_{fromdate}_{todate}.csv'
     with open(output_csv_name, 'w', newline='') as csvfile:
         sqlwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
-        sqlwriter.writerow(['member_code', 'plan_code', 'reserve_number', 'lodging_total_price'])
+        sqlwriter.writerow(['MEMBER_CODE', 'PLAN_CODE', 'RESERVE_NUMBER', 'ACTUAL_PRICE', 'TOTAL_USE_POINT_AMOUNT'])
         sqlwriter.writerows(reserve_list)
     logger.info('reservation_summary_for_point_grant_batch End') 
     return len(reserve_list)
