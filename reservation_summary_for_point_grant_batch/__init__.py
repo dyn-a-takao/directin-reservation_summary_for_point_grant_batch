@@ -5,8 +5,8 @@ import setup
 import member_repository
 import reserve_repository
 import csv_factory
+import dbconnecter
 from datetime import date
-from dbconnect import Dbconnector
 
 logger = setup.get_logger()
 
@@ -20,7 +20,7 @@ def main():
     todate = date.fromisoformat(sys.argv[2])
 
     member_group_codes = member_repository.get_member_group_codes()
-    reserve_service_connection = Dbconnector.connect('reserveServiceDB')
+    reserve_service_connection = dbconnecter.get_connection('reserveServiceDB')
 
     with reserve_service_connection:
         reserve_map_by_group = reserve_repository.get_reserve_summary(
