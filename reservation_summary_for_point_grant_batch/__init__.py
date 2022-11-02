@@ -5,6 +5,7 @@ import csv
 import setup
 import member_repository
 import reserve_repository
+import dyconfig
 from datetime import date
 from dbconnect import Dbconnector
 
@@ -26,7 +27,9 @@ def main():
         fromdate=fromdate, 
         todate=todate)
     
-    with open('output/aggregated.csv', 'w', newline='') as csvfile:
+    output_csv_path = dyconfig.get('output_csv', 'output_path')
+    output_csv_name = f'{output_csv_path}/aggregated_{fromdate}_{todate}.csv'
+    with open(output_csv_name, 'w', newline='') as csvfile:
         sqlwriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_ALL)
         sqlwriter.writerow(['member_code', 'plan_code', 'reserve_number', 'lodging_total_price'])
         sqlwriter.writerows(reserve_list)
