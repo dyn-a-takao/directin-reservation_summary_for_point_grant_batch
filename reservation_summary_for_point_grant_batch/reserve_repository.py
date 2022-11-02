@@ -1,12 +1,15 @@
 import dyconfig
 import setup
+import itertools
 
 logger = setup.get_logger()
 
-def get_reserve_summary(connection, member_group_code, fromdate, todate):
+def get_reserve_summary(connection, member_group_codes, fromdate, todate):
     grace_days_after_checkout = dyconfig.get('reserve_repository', 'grace_days_after_checkout')
+    member_group_code_term = ",".join([f"'{code}'" for code in member_group_codes])
     query = f'''
-        SELECT MEMBER_CODE
+        SELECT MEMBER_GROUP_CODE
+            , MEMBER_CODE
             , PLAN_CODE
             , reserve.RESERVE_NUMBER
             , LODGING_TOTAL_PRICE + IFNULL(TOTAL_OPTION_PRICE, 0) + IFNULL(ACCOMMODATION_RECORD_ADJUSTMENT_PRICE, 0) AS `ACTUAL_PRICE`
@@ -29,13 +32,14 @@ def get_reserve_summary(connection, member_group_code, fromdate, todate):
         AND RESERVE_CANCEL_KBN = 0
         AND '{fromdate}' <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
         AND '{todate}' > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
-        AND MEMBER_GROUP_CODE = '{member_group_code}';
+        AND MEMBER_GROUP_CODE IN ({member_group_code_term});
     '''
     logger.debug(query)
 
-    with connection.cursor() as cursor:
+    with connection.cursor(dictionary=True) as cursor:
         cursor.execute(query)
         reserve_list = cursor.fetchall()
     logger.info(f'Number of temporary reservation: {len(reserve_list)}')
 
-    return reserve_list
+    reserve_map_by_group = itertools.groupby(reserve_list, lambda reserve: reserve.pop('MEMBER_GROUP_CODE'))
+    return reserve_map_by_group
