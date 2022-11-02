@@ -5,10 +5,8 @@ from dbconnect import Dbconnector
 logger = setup.get_logger()
 connection = Dbconnector.connect('reserveServiceDB')
 
-def get_reserve_summary(member_group_codes, fromdate, todate):
+def get_reserve_summary(member_group_code, fromdate, todate):
     grace_days_after_checkout = dyconfig.get('reserve_repository', 'grace_days_after_checkout')
-    member_group_code_term = ",".join([f"'{code}'" for code in member_group_codes])
-    logger.debug(member_group_code_term)
     query = f'''
         SELECT MEMBER_CODE
             , PLAN_CODE
@@ -33,7 +31,7 @@ def get_reserve_summary(member_group_codes, fromdate, todate):
         AND RESERVE_CANCEL_KBN = 0
         AND '{fromdate}' <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
         AND '{todate}' > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
-        AND MEMBER_GROUP_CODE IN ({member_group_code_term});
+        AND MEMBER_GROUP_CODE = '{member_group_code}';
     '''
     logger.debug(query)
 

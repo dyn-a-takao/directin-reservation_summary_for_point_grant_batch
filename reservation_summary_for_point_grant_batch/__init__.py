@@ -19,16 +19,19 @@ def main():
     todate = date.fromisoformat(sys.argv[2])
 
     member_group_codes = member_repository.get_member_group_codes()
-    reserve_list = reserve_repository.get_reserve_summary(
-        member_group_codes=member_group_codes, 
-        fromdate=fromdate, 
-        todate=todate)
-    
-    csv_factory.generate_summary_csv_file(
-        reserve_list=reserve_list,
-        fromdate=fromdate,
-        todate=todate)
+
+    for member_group_code in member_group_codes:
+        reserve_list = reserve_repository.get_reserve_summary(
+            member_group_code=member_group_code, 
+            fromdate=fromdate, 
+            todate=todate)
         
+        csv_factory.generate_summary_csv_file(
+            reserve_list=reserve_list,
+            fromdate=fromdate,
+            todate=todate,
+            member_group_code=member_group_code)
+
     logger.info('reservation_summary_for_point_grant_batch End') 
     return len(reserve_list)
 
