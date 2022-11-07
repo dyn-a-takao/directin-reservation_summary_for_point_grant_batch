@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import enum
 import sys
 import setup
 import member_repository
@@ -11,7 +12,12 @@ from datetime import date
 logger = setup.get_logger()
 
 
-def main():
+class ExitCode(enum.IntEnum):
+    SUCCESS = 0
+    ERROR = 1
+
+
+def main() -> int:
     """
     fromdateからtodateまでの間に実績確定した予約の一覧を抽出する。
     """
@@ -38,6 +44,8 @@ def main():
             member_group_code=member_group_code)
 
     logger.info("reservation_summary_for_point_grant_batch End")
+
+    return ExitCode.SUCCESS
 
 
 if __name__ == "__main__":
