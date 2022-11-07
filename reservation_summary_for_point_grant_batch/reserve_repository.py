@@ -4,12 +4,15 @@ import itertools
 
 logger = setup.get_logger()
 
+# プレースホルダ置き換え対象文字
+PLACEHOLDER = "%s"
+
 
 def get_reserve_summary(connection, member_group_codes, fromdate, todate):
     grace_days_after_checkout = dyconfig.get(
         'reserve_repository', 'grace_days_after_checkout')
-    member_group_code_term = ",".join(
-        [f"'{code}'" for code in member_group_codes])
+    member_group_code_format = ",".join(
+        [PLACEHOLDER] * len(member_group_codes))
     query = f'''
         SELECT MEMBER_GROUP_CODE
             , MEMBER_CODE
@@ -33,13 +36,15 @@ def get_reserve_summary(connection, member_group_codes, fromdate, todate):
             ON reserve_option.RESERVE_NUMBER = reserve.RESERVE_NUMBER
         WHERE MEMBER_TYPE_KBN = 1
         AND RESERVE_CANCEL_KBN = 0
-        AND '{fromdate}' <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
-        AND '{todate}' > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {grace_days_after_checkout} DAY)
-        AND MEMBER_GROUP_CODE IN ({member_group_code_term});
+        AND {PLACEHOLDER} <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
+        AND {PLACEHOLDER} > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
+        AND MEMBER_GROUP_CODE IN ({member_group_code_format});
     '''
+    query_term_list = [fromdate, grace_days_after_checkout,
+                       todate, grace_days_after_checkout]+member_group_codes
 
     with connection.cursor(dictionary=True) as cursor:
-        cursor.execute(query)
+        cursor.execute(query, query_term_list)
         logger.debug(cursor._executed)
         reserve_list = cursor.fetchall()
     logger.info(f'Number of temporary reservation: {len(reserve_list)}')
