@@ -10,10 +10,10 @@ PLACEHOLDER = "%s"
 
 def get_reserve_summary(connection, member_group_codes, fromdate, todate):
     grace_days_after_checkout = dyconfig.get(
-        'reserve_repository', 'grace_days_after_checkout')
+        "reserve_repository", "grace_days_after_checkout")
     member_group_code_format = ",".join(
         [PLACEHOLDER] * len(member_group_codes))
-    query = f'''
+    query = f"""
         SELECT MEMBER_GROUP_CODE
             , MEMBER_CODE
             , PLAN_CODE
@@ -39,7 +39,7 @@ def get_reserve_summary(connection, member_group_codes, fromdate, todate):
         AND {PLACEHOLDER} <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
         AND {PLACEHOLDER} > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
         AND MEMBER_GROUP_CODE IN ({member_group_code_format});
-    '''
+    """
     query_term_list = [fromdate, grace_days_after_checkout,
                        todate, grace_days_after_checkout]+member_group_codes
 
@@ -47,8 +47,8 @@ def get_reserve_summary(connection, member_group_codes, fromdate, todate):
         cursor.execute(query, query_term_list)
         logger.debug(cursor._executed)
         reserve_list = cursor.fetchall()
-    logger.info(f'Number of temporary reservation: {len(reserve_list)}')
+    logger.info(f"Number of temporary reservation: {len(reserve_list)}")
 
     reserve_map_by_group = itertools.groupby(
-        reserve_list, lambda reserve: reserve.pop('MEMBER_GROUP_CODE'))
+        reserve_list, lambda reserve: reserve.pop("MEMBER_GROUP_CODE"))
     return reserve_map_by_group
