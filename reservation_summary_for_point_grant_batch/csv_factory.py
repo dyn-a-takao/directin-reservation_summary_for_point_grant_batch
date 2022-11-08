@@ -13,11 +13,11 @@ def generate_summary_csv_file(reserve_list, fromdate, todate, member_group_code)
             "RESERVE_NUMBER",
             "ACTUAL_PRICE",
             "TOTAL_USE_POINT_AMOUNT"]
-        sqlwriter = csv.DictWriter(
+        csvwriter = csv.DictWriter(
             csvfile,
             fieldnames=fieldnames,
             delimiter=",",
             quotechar='"',
             quoting=csv.QUOTE_ALL)
-        sqlwriter.writeheader()
-        sqlwriter.writerows(reserve_list)
+        csvwriter.writeheader()
+        csvwriter.writerows(reserve_list)
