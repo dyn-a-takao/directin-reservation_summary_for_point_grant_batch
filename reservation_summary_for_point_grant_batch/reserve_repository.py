@@ -40,7 +40,8 @@ def get_reserve_summary(connection, member_group_codes: list[str], fromdate: dat
         AND RESERVE_CANCEL_KBN = 0
         AND {PLACEHOLDER} <= DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
         AND {PLACEHOLDER} > DATE_ADD(RESERVE_CHECKIN_DATE, INTERVAL RESERVE_LODGING_DATE_NUM + {PLACEHOLDER} DAY)
-        AND MEMBER_GROUP_CODE IN ({member_group_code_format});
+        AND MEMBER_GROUP_CODE IN ({member_group_code_format})
+        ORDER BY MEMBER_GROUP_CODE
     """
     query_term_list = [fromdate, grace_days_after_checkout,
                        todate, grace_days_after_checkout]+member_group_codes
