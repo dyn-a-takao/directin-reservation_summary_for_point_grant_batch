@@ -1,6 +1,8 @@
 import dyconfig
 import setup
 import itertools
+from datetime import date
+from typing import Iterator
 
 logger = setup.get_logger()
 
@@ -8,7 +10,7 @@ logger = setup.get_logger()
 PLACEHOLDER = "%s"
 
 
-def get_reserve_summary(connection, member_group_codes, fromdate, todate):
+def get_reserve_summary(connection, member_group_codes: list[str], fromdate: date, todate: date):
     grace_days_after_checkout = dyconfig.get(
         "reserve_repository", "grace_days_after_checkout")
     member_group_code_format = ",".join(

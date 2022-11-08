@@ -41,7 +41,7 @@ def main() -> ResultCode:
 
         for member_group_code, reserve_list in reserve_map_by_group:
             csv_factory.generate_summary_csv_file(
-                reserve_list=reserve_list,
+                reserve_list=list(reserve_list),
                 fromdate=fromdate,
                 todate=todate,
                 member_group_code=member_group_code)
