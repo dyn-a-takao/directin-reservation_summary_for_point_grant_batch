@@ -4,7 +4,7 @@ import itertools
 from datetime import date
 from typing import Iterator
 
-logger = setup.get_logger()
+logger = setup.get_logger(__name__)
 
 # プレースホルダ置き換え対象文字
 PLACEHOLDER = "%s"

@@ -9,7 +9,7 @@ import csv_factory
 import dbconnecter
 from datetime import date
 
-logger = setup.get_logger()
+logger = setup.get_logger(__name__)
 
 
 class ResultCode(enum.IntEnum):

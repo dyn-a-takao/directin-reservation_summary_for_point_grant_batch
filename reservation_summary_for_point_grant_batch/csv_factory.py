@@ -4,7 +4,7 @@ import setup
 from datetime import date
 from typing import Iterator, Mapping
 
-logger = setup.get_logger()
+logger = setup.get_logger(__name__)
 output_csv_path = dyconfig.get("output_csv", "output_path")
 
 

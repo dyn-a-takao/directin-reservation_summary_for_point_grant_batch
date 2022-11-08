@@ -4,7 +4,7 @@ import requests
 import json
 import setup
 
-logger = setup.get_logger()
+logger = setup.get_logger(__name__)
 base_path = dyconfig.get("member_repository", "crm_api_root")
 action = dyconfig.get("member_repository", "member_group_code_api_path")
 
