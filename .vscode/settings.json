@@ -3,5 +3,7 @@
         "PSExecutionPolicyPreference": "RemoteSigned"
     },
     "makefile.extensionOutputFolder": "./.vscode",
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "editor. tabSize": 4,
+    "editor.insertSpaces": true
 }
