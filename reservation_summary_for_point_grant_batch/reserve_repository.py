@@ -1,8 +1,7 @@
-import dyconfig
-import setup
 import itertools
 from datetime import date
-from typing import Iterator
+from . import dyconfig
+from . import setup
 
 logger = setup.get_logger(__name__)
 

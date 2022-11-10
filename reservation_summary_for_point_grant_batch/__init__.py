@@ -2,12 +2,12 @@
 
 import enum
 import sys
-import setup
-import member_repository
-import reserve_repository
-import csv_factory
-import dbconnecter
 from datetime import date
+from . import setup
+from . import member_repository
+from . import reserve_repository
+from . import csv_factory
+from . import dbconnecter
 
 logger = setup.get_logger(__name__)
 

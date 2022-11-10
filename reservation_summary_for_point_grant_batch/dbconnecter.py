@@ -1,5 +1,5 @@
 import mysql.connector
-import dyconfig
+from . import dyconfig
 
 
 def get_connection(name: str):

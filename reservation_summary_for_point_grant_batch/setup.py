@@ -1,5 +1,5 @@
 import logging
-import dyconfig
+from . import dyconfig
 
 
 def setup_config():

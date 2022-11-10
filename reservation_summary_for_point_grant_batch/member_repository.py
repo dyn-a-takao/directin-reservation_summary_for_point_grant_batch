@@ -1,8 +1,8 @@
-from symbol import parameters
-import dyconfig
 import requests
 import json
-import setup
+from symbol import parameters
+from . import dyconfig
+from . import setup
 
 logger = setup.get_logger(__name__)
 base_path = dyconfig.get("member_repository", "crm_api_root")
