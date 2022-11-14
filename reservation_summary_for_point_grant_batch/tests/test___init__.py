@@ -2,6 +2,7 @@ import unittest
 import pytest
 import sys
 import csv
+import requests
 from decimal import Decimal
 from unittest import mock
 from reservation_summary_for_point_grant_batch import ResultCode, dbconnecter, dyconfig, main, setup
@@ -17,14 +18,19 @@ class test___init__(unittest.TestCase):
     }
 
     @mock.patch.object(dbconnecter, "get_connection")
+    @mock.patch.object(requests, "get")
     @mock.patch.object(dyconfig, "get")
-    def test_main_正常終了(self,  mocked_get, mocked_connection):
-        mocked_get.side_effect = lambda name, key: self.CONFIG_DATA[name][key]
+    def test_main_正常終了(self,  mocked_config_get, mocked_http_get, mocked_connection):
+        mocked_config_get.side_effect = lambda name, key: self.CONFIG_DATA[name][key]
 
         arg_fromdate = "2021-09-05"
         arg_todate = "2022-09-06"
         arg_group_code_1 = "M000000060"
         arg_group_code_2 = "M000000019"
+
+        api_response_body = ["hoge", "huga",
+                             arg_group_code_1, arg_group_code_2]
+        mocked_http_get.return_value.json.return_value = api_response_body
 
         query_result = [
             {
@@ -113,8 +119,9 @@ class test___init__(unittest.TestCase):
         assert actual_csv_data_list_2 == expected_file_content_2
 
     @mock.patch.object(dbconnecter, "get_connection")
+    @mock.patch.object(requests, "get")
     @mock.patch.object(dyconfig, "get")
-    def test_main_異常終了(self,  mocked_get, mocked_connection):
+    def test_main_異常終了(self,  mocked_get, mocked_http_get, mocked_connection):
         mocked_get.side_effect = Exception("test_exception")
 
         arg_fromdate = "2021-09-05"

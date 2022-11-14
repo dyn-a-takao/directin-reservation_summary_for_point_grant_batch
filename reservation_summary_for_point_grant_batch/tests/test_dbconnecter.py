@@ -30,19 +30,19 @@ class Test_dbconnecter(unittest.TestCase):
     @mock.patch.object(dyconfig, "getint")
     @mock.patch.object(dyconfig, "get")
     def test_get_connection(self, mocked_get, mocked_getint, mocked_getboolean, mocked_connect):
-        expected_name = "name1"
-        expected_host = CONFIG_DATA[expected_name]["host"]
-        expected_port = CONFIG_DATA[expected_name]["port"]
-        expected_user = CONFIG_DATA[expected_name]["user"]
-        expected_password = CONFIG_DATA[expected_name]["password"]
-        expected_database = CONFIG_DATA[expected_name]["database"]
-        expected_ssl_disabled = CONFIG_DATA[expected_name]["ssl_disabled"]
+        arg_name = "name1"
+        expected_host = CONFIG_DATA[arg_name]["host"]
+        expected_port = CONFIG_DATA[arg_name]["port"]
+        expected_user = CONFIG_DATA[arg_name]["user"]
+        expected_password = CONFIG_DATA[arg_name]["password"]
+        expected_database = CONFIG_DATA[arg_name]["database"]
+        expected_ssl_disabled = CONFIG_DATA[arg_name]["ssl_disabled"]
 
         mocked_get.side_effect = lambda name, key: CONFIG_DATA[name][key]
         mocked_getint.return_value = expected_port
         mocked_getboolean.return_value = expected_ssl_disabled
 
-        actual_connection = dbconnecter.get_connection(expected_name)
+        actual_connection = dbconnecter.get_connection(arg_name)
 
         mocked_connect.assert_called_once_with(
             host=expected_host, port=expected_port, user=expected_user, password=expected_password, database=expected_database, ssl_disabled=expected_ssl_disabled)
