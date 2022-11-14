@@ -7,7 +7,7 @@ logger = setup.get_logger(__name__)
 output_csv_path = dyconfig.get("output_csv", "output_path")
 
 
-def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date, todate: date, member_group_code: str):
+def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date, todate: date, member_group_code: str) -> None:
     logger.info(
         f"reserve_list={reserve_list}, fromdate={fromdate}, todate={todate}, member_group_code={member_group_code}")
     output_csv_name = f"{output_csv_path}/summary_reserve_{fromdate:%Y%m%d}_{todate:%Y%m%d}_{member_group_code}.csv"
