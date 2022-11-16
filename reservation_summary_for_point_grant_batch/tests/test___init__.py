@@ -1,10 +1,8 @@
 import pytest
 import sys
 import csv
-import requests
 from decimal import Decimal
-from unittest import mock
-from reservation_summary_for_point_grant_batch import ResultCode, dbconnecter, dyconfig, main, setup
+from reservation_summary_for_point_grant_batch import ResultCode, main, setup
 
 
 logger = setup.get_logger(__name__)

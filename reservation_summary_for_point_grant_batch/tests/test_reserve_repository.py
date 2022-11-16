@@ -1,8 +1,6 @@
 from decimal import Decimal
 import pytest
-from configparser import ConfigParser
-from unittest import mock
-from reservation_summary_for_point_grant_batch import dyconfig
+from reservation_summary_for_point_grant_batch import reserve_repository
 
 
 def test_get_reserve_summary(mocked_config_get):

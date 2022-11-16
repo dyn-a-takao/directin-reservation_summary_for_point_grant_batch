@@ -2,8 +2,7 @@ import pytest
 import datetime
 import csv
 from decimal import Decimal
-from unittest import mock
-from reservation_summary_for_point_grant_batch import csv_factory, dyconfig
+from reservation_summary_for_point_grant_batch import csv_factory
 
 
 excepted_fieldnames = [

@@ -4,7 +4,7 @@ import mysql.connector
 import requests
 from unittest import mock
 from configparser import ConfigParser
-from reservation_summary_for_point_grant_batch import ResultCode, dbconnecter, dyconfig,  setup
+from reservation_summary_for_point_grant_batch import dbconnecter, dyconfig
 
 
 @pytest.fixture

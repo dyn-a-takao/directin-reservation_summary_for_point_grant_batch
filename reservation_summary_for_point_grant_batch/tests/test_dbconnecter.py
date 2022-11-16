@@ -1,7 +1,5 @@
 import pytest
-import mysql.connector
-from unittest import mock
-from reservation_summary_for_point_grant_batch import dbconnecter, dyconfig
+from reservation_summary_for_point_grant_batch import dbconnecter
 
 CONFIG_DATA = {
     "name1": {

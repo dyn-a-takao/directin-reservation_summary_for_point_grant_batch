@@ -1,6 +1,4 @@
 import pytest
-from configparser import ConfigParser
-from unittest import mock
 from reservation_summary_for_point_grant_batch import dyconfig
 
 
