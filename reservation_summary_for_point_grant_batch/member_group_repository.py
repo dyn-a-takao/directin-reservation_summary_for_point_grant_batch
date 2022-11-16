@@ -1,6 +1,4 @@
 import requests
-import json
-from symbol import parameters
 from . import dyconfig
 from . import setup
 
