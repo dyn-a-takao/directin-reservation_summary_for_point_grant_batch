@@ -4,7 +4,7 @@ import enum
 import sys
 from datetime import date
 from . import setup
-from . import member_repository
+from . import member_group_repository
 from . import reserve_repository
 from . import csv_factory
 from . import dbconnecter
@@ -27,7 +27,7 @@ def aggregate_reservation_for_point_grant() -> ResultCode:
     fromdate = date.fromisoformat(sys.argv[1])
     todate = date.fromisoformat(sys.argv[2])
 
-    member_group_codes = member_repository.get_member_group_codes()
+    member_group_codes = member_group_repository.get_member_group_codes()
     reserve_service_connection = dbconnecter.get_connection(
         "reserveServiceDB")
 
