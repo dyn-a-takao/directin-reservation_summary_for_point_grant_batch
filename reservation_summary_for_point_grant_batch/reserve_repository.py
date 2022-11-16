@@ -49,7 +49,7 @@ def get_reserve_summary(connection, member_group_codes: list[str], fromdate: dat
         cursor.execute(query, query_term_list)
         logger.debug(cursor._executed)
         reserve_map = cursor.fetchall()
-    logger.info(f"Number of temporary reservation: {len(reserve_map)}")
+    logger.info("Number of temporary reservation: %s", len(reserve_map))
 
     reserve_list_by_group = itertools.groupby(
         reserve_map, lambda reserve: reserve.pop("MEMBER_GROUP_CODE"))

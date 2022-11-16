@@ -8,8 +8,8 @@ output_csv_path = dyconfig.get("output_csv", "output_path")
 
 
 def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date, todate: date, member_group_code: str) -> None:
-    logger.info(
-        f"reserve_list={reserve_list}, fromdate={fromdate}, todate={todate}, member_group_code={member_group_code}")
+    logger.info("reserve_list=%s, fromdate=%s, todate=%s, member_group_code=%s",
+                reserve_list, fromdate, todate, member_group_code)
     output_csv_name = f"{output_csv_path}/summary_reserve_{fromdate:%Y%m%d}_{todate:%Y%m%d}_{member_group_code}.csv"
     with open(output_csv_name, "w", newline="") as csvfile:
         fieldnames = [
