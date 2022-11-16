@@ -1,4 +1,3 @@
-import itertools
 from datetime import date
 from . import dyconfig
 from . import setup
@@ -9,7 +8,7 @@ logger = setup.get_logger(__name__)
 PLACEHOLDER = "%s"
 
 
-def get_reserve_summary(connection, member_group_codes: list[str], fromdate: date, todate: date):
+def get_reserve_summary_cursor(connection, member_group_codes: list[str], fromdate: date, todate: date):
     grace_days_after_checkout = dyconfig.get(
         "reserve_repository", "grace_days_after_checkout")
     member_group_code_format = ",".join(
@@ -28,7 +27,7 @@ def get_reserve_summary(connection, member_group_codes: list[str], fromdate: dat
             WHERE KIND = 'PAYMENT'
             GROUP BY RESERVE_NUMBER
         ) point
-            ON point.RESERVE_NUMBER
+            ON point.RESERVE_NUMBER = reserve.RESERVE_NUMBER
         LEFT JOIN (
             SELECT RESERVE_NUMBER, SUM(OPTION_RESERVE_NUM * OPTION_PRICE) AS `TOTAL_OPTION_PRICE`
             FROM reserveServiceDB.RESERVE_OPTION_TABLE
@@ -45,12 +44,14 @@ def get_reserve_summary(connection, member_group_codes: list[str], fromdate: dat
     query_term_list = [fromdate, grace_days_after_checkout,
                        todate, grace_days_after_checkout]+member_group_codes
 
-    with connection.cursor(dictionary=True) as cursor:
-        cursor.execute(query, query_term_list)
-        logger.debug(cursor._executed)
-        reserve_map = cursor.fetchall()
-    logger.info("Number of temporary reservation: %s", len(reserve_map))
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute(query, query_term_list)
+    logger.debug(cursor._executed)
+    return cursor
 
-    reserve_list_by_group = itertools.groupby(
-        reserve_map, lambda reserve: reserve.pop("MEMBER_GROUP_CODE"))
-    return reserve_list_by_group
+
+def get_reserve_summary(reserve_summary_cursor, acquired_size: int) -> list[dict[str, str]]:
+    reserve_list = reserve_summary_cursor.fetchmany(acquired_size)
+    logger.info("Number of temporary reservation: %s", len(reserve_list))
+    # logger.debug(reserve_list)
+    return reserve_list

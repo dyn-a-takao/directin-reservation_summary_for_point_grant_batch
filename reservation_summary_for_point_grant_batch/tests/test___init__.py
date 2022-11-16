@@ -50,7 +50,7 @@ def test_main_正常終了(mocked_config_get, mocked_http_get, mocked_connection
             "TOTAL_USE_POINT_AMOUNT": Decimal("500"),
         }, ]
     mocked_cursor = mocked_connection.return_value.cursor.return_value
-    mocked_cursor.__enter__().fetchall.return_value = query_result
+    mocked_cursor.fetchmany.side_effect = [query_result, []]
 
     param_fromdate = arg_fromdate.replace("-", "")
     param_todate = arg_todate.replace("-", "")
