@@ -52,6 +52,6 @@ def get_reserve_summary_cursor(connection, member_group_codes: list[str], fromda
 
 def get_reserve_list(reserve_summary_cursor, acquired_size: int) -> list[dict[str, str]]:
     reserve_list = reserve_summary_cursor.fetchmany(acquired_size)
-    logger.info("Number of temporary reservation: %s", len(reserve_list))
+    logger.info("Number of new reservation: %s", len(reserve_list))
     # logger.debug(reserve_list)
     return reserve_list
