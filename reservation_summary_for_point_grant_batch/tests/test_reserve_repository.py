@@ -12,7 +12,7 @@ CONFIG_DATA = {
 }
 
 
-def test_get_reserve_summary(mocked_config_get, mocked_connection):
+def test_get_reserve_list(mocked_config_get, mocked_connection):
     mocked_config_get.side_effect = lambda name, key: CONFIG_DATA[name][key]
 
     group_code_1 = "M000000060"
@@ -54,7 +54,7 @@ def test_get_reserve_summary(mocked_config_get, mocked_connection):
 
     actual_cursor = reserve_repository.get_reserve_summary_cursor(
         mocked_connection.return_value, arg_member_group_codes, arg_fromdate, arg_todate)
-    actual_reserve_summary = reserve_repository.get_reserve_summary(
+    actual_reserve_summary = reserve_repository.get_reserve_list(
         actual_cursor, 1000)
 
     assert actual_reserve_summary == expected_reserve_summary
