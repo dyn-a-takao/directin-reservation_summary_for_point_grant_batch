@@ -18,6 +18,9 @@ class ResultCode(enum.IntEnum):
     OTHER_ERROR = 1
 
 
+KEY_NAME = "MEMBER_GROUP_CODE"
+
+
 def aggregate_reservation_for_point_grant() -> ResultCode:
     """
     fromdateからtodateまでの間に実績確定した予約の一覧を抽出する。
@@ -40,32 +43,32 @@ def aggregate_reservation_for_point_grant() -> ResultCode:
             todate=todate)
 
         with reserve_summary_cursor:
-            reserve_summary_queue: list[dict[str, str]] = []
+            reserve_summary: list[dict[str, str]] = []
             while True:
-                reserve_summary = reserve_repository.get_reserve_summary(
+                latest_reserve_summary = reserve_repository.get_reserve_summary(
                     reserve_summary_cursor, 12)
-                reserve_summary_queue += reserve_summary
-                if reserve_summary:
-                    latest_group_code = reserve_summary_queue[-1]["MEMBER_GROUP_CODE"]
-                    target_map = itertools.groupby([summary for summary in reserve_summary_queue if summary["MEMBER_GROUP_CODE"]
-                                                   != latest_group_code], lambda reserve: reserve.pop("MEMBER_GROUP_CODE"))
-                    reserve_summary_queue = [
-                        summary for summary in reserve_summary_queue if summary["MEMBER_GROUP_CODE"] == latest_group_code]
-                    for member_group_code, reserve_list in target_map:
-                        if member_group_code != latest_group_code:
-                            csv_factory.generate_summary_csv_file(
-                                reserve_list=list(reserve_list),
-                                fromdate=fromdate,
-                                todate=todate,
-                                member_group_code=member_group_code)
-                else:
-                    target_map = itertools.groupby(reserve_summary_queue, lambda reserve: reserve.pop("MEMBER_GROUP_CODE"))
-                    for member_group_code, reserve_list in target_map:
-                        csv_factory.generate_summary_csv_file(
-                            reserve_list=list(reserve_list),
-                            fromdate=fromdate,
-                            todate=todate,
-                            member_group_code=member_group_code)
+                reserve_summary += latest_reserve_summary
+
+                latest_group_code = ""
+                if latest_reserve_summary:
+                    latest_group_code = latest_reserve_summary[-1][KEY_NAME]
+
+                loaded_summary_list = [
+                    summary for summary in reserve_summary if summary[KEY_NAME] != latest_group_code]
+                reserve_summary = [
+                    summary for summary in reserve_summary if summary[KEY_NAME] == latest_group_code]
+
+                target_map = itertools.groupby(
+                    loaded_summary_list, lambda reserve: reserve.pop(KEY_NAME))
+
+                for member_group_code, reserve_list in target_map:
+                    csv_factory.generate_summary_csv_file(
+                        reserve_list=list(reserve_list),
+                        fromdate=fromdate,
+                        todate=todate,
+                        member_group_code=member_group_code)
+
+                if not reserve_summary:
                     break
 
     logger.info("reservation_summary_for_point_grant_batch End")
