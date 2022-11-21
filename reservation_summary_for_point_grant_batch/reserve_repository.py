@@ -50,7 +50,8 @@ def get_reserve_summary_cursor(connection, member_group_codes: list[str], fromda
     return cursor
 
 
-def get_reserve_list(reserve_summary_cursor, acquired_size: int) -> list[dict[str, str]]:
+def get_reserve_list(reserve_summary_cursor) -> list[dict[str, str]]:
+    acquired_size = dyconfig.getint("reserve_repository", "acquired_size")
     reserve_list = reserve_summary_cursor.fetchmany(acquired_size)
     logger.info("Number of new reservation: %s", len(reserve_list))
     # logger.debug(reserve_list)

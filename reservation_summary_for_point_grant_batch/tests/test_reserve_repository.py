@@ -8,12 +8,14 @@ from reservation_summary_for_point_grant_batch import reserve_repository
 CONFIG_DATA = {
     "reserve_repository": {
         "grace_days_after_checkout": 12,
+        "acquired_size": 6,
     },
 }
 
 
-def test_get_reserve_list(mocked_config_get, mocked_connection):
+def test_get_reserve_list(mocked_config_get, mocked_config_getint, mocked_connection):
     mocked_config_get.side_effect = lambda name, key: CONFIG_DATA[name][key]
+    mocked_config_getint.side_effect = lambda name, key: CONFIG_DATA[name][key]
 
     group_code_1 = "M000000060"
     group_code_2 = "M000000019"
@@ -55,7 +57,7 @@ def test_get_reserve_list(mocked_config_get, mocked_connection):
     actual_cursor = reserve_repository.get_reserve_summary_cursor(
         mocked_connection.return_value, arg_member_group_codes, arg_fromdate, arg_todate)
     actual_reserve_summary = reserve_repository.get_reserve_list(
-        actual_cursor, 1000)
+        actual_cursor)
 
     assert actual_reserve_summary == expected_reserve_summary
 

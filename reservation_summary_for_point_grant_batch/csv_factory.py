@@ -16,7 +16,7 @@ def convert_reserve_to_csv(reserve_list_cursor, fromdate: date, todate: date):
     reserve_list: list[dict[str, str]] = []
     while True:
         latest_reserve_list = reserve_repository.get_reserve_list(
-            reserve_list_cursor, 12)
+            reserve_list_cursor)
         reserve_list += latest_reserve_list
 
         latest_group_code = ""
