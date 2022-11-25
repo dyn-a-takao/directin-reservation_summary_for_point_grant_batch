@@ -14,6 +14,10 @@ CONFIG_DATA = {
 
 
 def init_testdata_list():
+    """
+    外部ファイルからテストデータ読み込んで初期化
+    """
+
     testdata_path = "reservation_summary_for_point_grant_batch/tests/testdata/case*/"
     case_list = glob.glob(testdata_path)
 
@@ -22,12 +26,15 @@ def init_testdata_list():
         with open(f"{case_dir}/query_result.json") as json_file:
             query_result = json.load(json_file)
 
+        with open(f"{case_dir}/api_result.json") as json_file:
+            api_result = json.load(json_file)
+
         csv_file_list = glob.glob(f"{case_dir}/expected_summary_*.csv")
         expected_csv_list = []
         for csv_file_name in csv_file_list:
             with open(csv_file_name, newline="\r\n") as csv_file:
                 expected_csv_list.append(csv_file.read())
-        testdata_list.append((query_result, expected_csv_list))
+        testdata_list.append((query_result, api_result, expected_csv_list))
 
     return testdata_list
 
@@ -39,14 +46,14 @@ def testdata(request):
 
 def test_main_正常終了(mocked_config_get, mocked_http_get, mocked_connection, testdata):
     mocked_config_get.side_effect = lambda name, key: CONFIG_DATA[name][key]
-    (query_result, expected_csv_list) = testdata
+    (query_result, api_result, expected_csv_list) = testdata
 
     arg_fromdate = "2021-09-05"
     arg_todate = "2022-09-06"
     arg_group_code_list = sorted(
         set([row["MEMBER_GROUP_CODE"] for row in query_result]))
 
-    api_response_body = ["hoge", "huga"] + arg_group_code_list
+    api_response_body = api_result
     mocked_http_get.return_value.json.return_value = api_response_body
 
     mocked_cursor = mocked_connection.return_value.cursor.return_value
