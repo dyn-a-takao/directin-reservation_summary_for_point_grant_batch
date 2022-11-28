@@ -2,7 +2,7 @@ import pytest
 import datetime
 import csv
 from decimal import Decimal
-from reservation_summary_for_point_grant_batch import csv_factory
+from reservation_summary_batch import csv_factory
 
 
 excepted_fieldnames = [

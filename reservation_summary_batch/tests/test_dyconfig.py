@@ -1,5 +1,5 @@
 import pytest
-from reservation_summary_for_point_grant_batch import dyconfig
+from reservation_summary_batch import dyconfig
 
 
 def test_get(mocked_parser_get):

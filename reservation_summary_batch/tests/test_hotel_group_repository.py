@@ -1,5 +1,5 @@
 import pytest
-from reservation_summary_for_point_grant_batch import hotel_group_repository
+from reservation_summary_batch import hotel_group_repository
 
 
 def test_get_member_group_codes(mocked_http_get):

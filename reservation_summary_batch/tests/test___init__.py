@@ -2,7 +2,7 @@ import pytest
 import sys
 import json
 import glob
-from reservation_summary_for_point_grant_batch import ResultCode, main, setup
+from reservation_summary_batch import ResultCode, main, setup
 
 
 logger = setup.get_logger(__name__)
@@ -18,7 +18,7 @@ def init_testdata_list() -> dict:
     外部ファイルからテストデータ読み込んで初期化
     """
 
-    testdata_path = "reservation_summary_for_point_grant_batch/tests/testdata/"
+    testdata_path = "reservation_summary_batch/tests/testdata/"
     case_pathlist = glob.glob(f"{testdata_path}*/")
 
     testdata_map = {}

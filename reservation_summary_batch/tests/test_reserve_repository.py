@@ -2,7 +2,7 @@ import datetime
 import pytest
 from datetime import date
 from decimal import Decimal
-from reservation_summary_for_point_grant_batch import reserve_repository
+from reservation_summary_batch import reserve_repository
 
 
 CONFIG_DATA = {

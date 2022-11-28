@@ -1,5 +1,5 @@
 import pytest
-from reservation_summary_for_point_grant_batch import dbconnecter
+from reservation_summary_batch import dbconnecter
 
 CONFIG_DATA = {
     "name1": {
