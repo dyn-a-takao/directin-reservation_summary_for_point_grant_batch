@@ -13,33 +13,34 @@ CONFIG_DATA = {
 }
 
 
-def init_testdata_list():
+def init_testdata_list() -> dict:
     """
     外部ファイルからテストデータ読み込んで初期化
     """
 
-    testdata_path = "reservation_summary_for_point_grant_batch/tests/testdata/case*/"
-    case_list = glob.glob(testdata_path)
+    testdata_path = "reservation_summary_for_point_grant_batch/tests/testdata/"
+    case_pathlist = glob.glob(f"{testdata_path}*/")
 
-    testdata_list = []
-    for case_dir in case_list:
-        with open(f"{case_dir}/query_result.json") as json_file:
+    testdata_map = {}
+    for case_path in case_pathlist:
+        case_name = case_path.replace(testdata_path, "")
+        with open(f"{case_path}/query_result.json") as json_file:
             query_result = json.load(json_file)
 
-        with open(f"{case_dir}/api_result.json") as json_file:
+        with open(f"{case_path}/api_result.json") as json_file:
             api_result = json.load(json_file)
 
-        csv_file_list = glob.glob(f"{case_dir}/expected_summary_*.csv")
+        csv_file_list = glob.glob(f"{case_path}/expected_summary_*.csv")
         expected_csv_list = []
         for csv_file_name in csv_file_list:
             with open(csv_file_name, newline="\r\n") as csv_file:
                 expected_csv_list.append(csv_file.read())
-        testdata_list.append((query_result, api_result, expected_csv_list))
+        testdata_map[case_name] = (query_result, api_result, expected_csv_list)
 
-    return testdata_list
+    return testdata_map
 
 
-@pytest.fixture(params=init_testdata_list())
+@pytest.fixture(params=list(init_testdata_list().values()), ids=list(init_testdata_list().keys()))
 def testdata(request):
     return request.param
 
