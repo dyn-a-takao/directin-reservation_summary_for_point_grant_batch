@@ -1,5 +1,5 @@
 import pytest
-from reservation_summary_for_point_grant_batch import member_group_repository
+from reservation_summary_for_point_grant_batch import hotel_group_repository
 
 
 def test_get_member_group_codes(mocked_http_get):
@@ -7,7 +7,7 @@ def test_get_member_group_codes(mocked_http_get):
     api_response_body = ["hoge", "huga", "M000000060", "M000000019"]
     mocked_http_get.return_value.json.return_value = api_response_body
 
-    actual = member_group_repository.get_member_group_codes()
+    actual = hotel_group_repository.get_member_group_codes()
     expected = api_response_body
 
     assert actual == expected
