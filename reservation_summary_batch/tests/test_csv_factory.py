@@ -44,8 +44,10 @@ def test_get_connection(mocked_config_get, mocked_csv_DictWriter,   mocked_file_
 
     excepted_csv_name = f"{mocked_config_get.return_value}/summary_reserve_{arg_fromdate:%Y%m%d}_{arg_todate:%Y%m%d}_{arg_member_group_code}.csv"
 
-    csv_factory.generate_summary_csv_file(
+    actual_csv_name = csv_factory.generate_summary_csv_file(
         arg_reserve_list, arg_fromdate, arg_todate, arg_member_group_code)
+
+    assert actual_csv_name == excepted_csv_name
 
     mocked_file_open.assert_called_once_with(
         excepted_csv_name, "w", newline="")
