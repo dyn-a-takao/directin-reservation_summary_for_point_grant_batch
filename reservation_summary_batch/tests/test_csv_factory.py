@@ -42,7 +42,8 @@ def test_get_connection(mocked_config_get, mocked_csv_DictWriter,   mocked_file_
     arg_todate = datetime.date(2022, 11, 5)
     arg_member_group_code = "membergroup1"
 
-    excepted_csv_name = f"{mocked_config_get.return_value}/summary_reserve_{arg_fromdate:%Y%m%d}_{arg_todate:%Y%m%d}_{arg_member_group_code}.csv"
+    excepted_csv_name = f"summary_reserve_{arg_fromdate:%Y%m%d}_{arg_todate:%Y%m%d}_{arg_member_group_code}.csv"
+    expected_csv_fullpath = f"{mocked_config_get.return_value}/{excepted_csv_name}"
 
     actual_csv_name = csv_factory.generate_summary_csv_file(
         arg_reserve_list, arg_fromdate, arg_todate, arg_member_group_code)
@@ -50,7 +51,7 @@ def test_get_connection(mocked_config_get, mocked_csv_DictWriter,   mocked_file_
     assert actual_csv_name == excepted_csv_name
 
     mocked_file_open.assert_called_once_with(
-        excepted_csv_name, "w", newline="")
+        expected_csv_fullpath, "w", newline="")
     mocked_csv_DictWriter.assert_called_once_with(
         mocked_file_open.return_value.__enter__(), fieldnames=excepted_fieldnames, delimiter=",", quotechar='"', quoting=csv.QUOTE_ALL)
     mocked_csv_DictWriter.return_value.writeheader.assert_called_once_with()

@@ -7,7 +7,7 @@ from . import reserve_repository
 from . import csv_factory
 
 logger = setup.get_logger(__name__)
-output_csv_path = dyconfig.get("output_csv", "output_path")
+output_csv_dir = dyconfig.get("output_csv", "output_path")
 
 
 def convert_reserve_to_csv(reserve_list_cursor, fromdate: date, todate: date) -> list[str]:
@@ -49,7 +49,8 @@ def convert_reserve_to_csv(reserve_list_cursor, fromdate: date, todate: date) ->
 
 
 def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date, todate: date, member_group_code: str) -> str:
-    output_csv_name = f"{output_csv_path}/summary_reserve_{fromdate:%Y%m%d}_{todate:%Y%m%d}_{member_group_code}.csv"
+    output_csv_name = f"summary_reserve_{fromdate:%Y%m%d}_{todate:%Y%m%d}_{member_group_code}.csv"
+    output_csv_fullpath = f"{output_csv_dir}/{output_csv_name}"
     logger.info("%s, size: %s", output_csv_name, len(reserve_list))
     fieldnames = [
         "MEMBER_CODE",
@@ -59,7 +60,7 @@ def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date
         "TOTAL_USE_POINT_AMOUNT"]
     csv_data_list = [{key: value for key, value in reserve.items(
     ) if key in fieldnames} for reserve in reserve_list]
-    with open(output_csv_name, "w", newline="") as csvfile:
+    with open(output_csv_fullpath, "w", newline="") as csvfile:
         csvwriter = csv.DictWriter(
             csvfile,
             fieldnames=fieldnames,
