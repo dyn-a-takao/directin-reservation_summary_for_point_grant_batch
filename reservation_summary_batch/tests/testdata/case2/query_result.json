@@ -1,0 +1,10 @@
+[
+    {
+        "MEMBER_GROUP_CODE": "M000000060",
+        "MEMBER_CODE": "member1-2",
+        "PLAN_CODE": "plan1-2",
+        "RESERVE_NUMBER": "reserve1-2",
+        "ACTUAL_PRICE": 6200,
+        "TOTAL_USE_POINT_AMOUNT": 1000
+    }
+]
