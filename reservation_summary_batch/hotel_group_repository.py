@@ -26,7 +26,7 @@ def get_member_group_codes() -> list[str]:
 
         parameters = {"page": page, "size": list_size}
 
-        response = requests.get(url, data=parameters,
+        response = requests.get(url, params=parameters,
                                 headers=header, verify=False)
         response.raise_for_status()
         logger.debug(response.text)
