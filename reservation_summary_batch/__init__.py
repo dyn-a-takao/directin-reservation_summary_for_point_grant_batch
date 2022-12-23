@@ -7,6 +7,7 @@ from . import setup
 from . import hotel_group_repository
 from . import reserve_repository
 from . import csv_factory
+from . import csv_uploader
 from . import dbconnecter
 
 logger = setup.get_logger(__name__)
@@ -39,8 +40,11 @@ def aggregate_reservation_for_point_grant() -> ResultCode:
             todate=todate)
 
         with reserve_summary_cursor:
-            csv_factory.convert_reserve_to_csv(
+            csv_filename_list = csv_factory.convert_reserve_to_csv(
                 reserve_summary_cursor, fromdate, todate)
+
+    if csv_filename_list:
+        csv_uploader.upload(csv_filename_list)
 
     logger.info("reservation_summary_for_point_grant_batch End")
 
