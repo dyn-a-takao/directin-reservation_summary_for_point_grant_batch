@@ -63,7 +63,7 @@ def test_main_正常終了(mocked_config_get, mocked_http_get, mocked_connection
     param_fromdate = arg_fromdate.replace("-", "")
     param_todate = arg_todate.replace("-", "")
     expected_file_name_list = [
-        f"output/summary_reserve_{param_fromdate}_{param_todate}_{group_code}.csv"for group_code in arg_group_code_list]
+        f"output/{group_code}/transaction-{param_fromdate}.csv"for group_code in arg_group_code_list]
 
     del sys.argv[1:]
     sys.argv.append(arg_fromdate)

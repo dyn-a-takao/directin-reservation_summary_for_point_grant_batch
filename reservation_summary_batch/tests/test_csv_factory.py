@@ -42,7 +42,7 @@ def test_get_connection(mocked_config_get, mocked_csv_DictWriter,   mocked_file_
     arg_todate = datetime.date(2022, 11, 5)
     arg_member_group_code = "membergroup1"
 
-    excepted_csv_name = f"summary_reserve_{arg_fromdate:%Y%m%d}_{arg_todate:%Y%m%d}_{arg_member_group_code}.csv"
+    excepted_csv_name = f"{arg_member_group_code}/transaction-{arg_fromdate:%Y%m%d}.csv"
     expected_csv_fullpath = f"{mocked_config_get.return_value}/{excepted_csv_name}"
 
     actual_csv_name = csv_factory.generate_summary_csv_file(

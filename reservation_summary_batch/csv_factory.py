@@ -49,7 +49,7 @@ def convert_reserve_to_csv(reserve_list_cursor, fromdate: date, todate: date) ->
 
 
 def generate_summary_csv_file(reserve_list: list[dict[str, str]], fromdate: date, todate: date, member_group_code: str) -> str:
-    output_csv_name = f"summary_reserve_{fromdate:%Y%m%d}_{todate:%Y%m%d}_{member_group_code}.csv"
+    output_csv_name = f"{member_group_code}/transaction-{fromdate:%Y%m%d}.csv"
     output_csv_fullpath = f"{output_csv_dir}/{output_csv_name}"
     logger.info("%s, size: %s", output_csv_name, len(reserve_list))
     fieldnames = [
