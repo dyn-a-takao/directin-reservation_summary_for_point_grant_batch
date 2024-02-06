@@ -1,0 +1,26 @@
+[
+    {
+        "MEMBER_GROUP_CODE": "M000000060",
+        "MEMBER_CODE": "member1",
+        "PLAN_CODE": "plan1",
+        "RESERVE_NUMBER": "reserve1",
+        "ACTUAL_PRICE": 6200,
+        "TOTAL_USE_POINT_AMOUNT": 1000
+    },
+    {
+        "MEMBER_GROUP_CODE": "M000000060",
+        "MEMBER_CODE": "member2",
+        "PLAN_CODE": "plan2",
+        "RESERVE_NUMBER": "reserve2",
+        "ACTUAL_PRICE": 12000,
+        "TOTAL_USE_POINT_AMOUNT": 0
+    },
+    {
+        "MEMBER_GROUP_CODE": "M000000019",
+        "MEMBER_CODE": "member3",
+        "PLAN_CODE": "plan3",
+        "RESERVE_NUMBER": "reserve3",
+        "ACTUAL_PRICE": 1500,
+        "TOTAL_USE_POINT_AMOUNT": 500
+    }
+]
